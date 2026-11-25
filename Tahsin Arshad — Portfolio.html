@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tahsin Arshad — Developing AI Skills</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#f6ece6;--mute:#c9b8d6;--amber:#ffb347;--rose:#f3a9b8;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;background:#21124a}
+body{height:800vh;font-family:'Manrope',system-ui,sans-serif;color:var(--ink);overflow-x:hidden;line-height:1.6}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,#21124a,#4a2a6e 60%,#c47a8a)}
+.haze{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(120% 60% at 50% 105%,rgba(255,170,140,.35),transparent 60%),radial-gradient(90% 90% at 50% 50%,transparent 55%,rgba(14,8,38,.6))}
+nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) 4vw 20px;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase}
+nav b{font:400 1.5rem 'Instrument Serif',serif;letter-spacing:.04em;text-transform:none}
+nav div{display:flex;gap:clamp(12px,2.4vw,34px);overflow-x:auto;scrollbar-width:none}
+nav a,nav button{color:var(--ink);text-decoration:none;opacity:.75;transition:opacity .3s,color .3s;background:none;border:0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;white-space:nowrap;padding:6px 0}
+nav a:hover,nav a.on,nav button:hover{opacity:1;color:var(--amber)}
+.ph{position:fixed;z-index:10;top:50%;left:6vw;width:min(560px,88vw);transform:translateY(-50%);opacity:0;pointer-events:none;will-change:transform,opacity;text-shadow:0 2px 24px rgba(20,8,50,.8)}
+.ph.r{left:auto;right:6vw}
+.ph.on{pointer-events:auto}
+.lab{font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+h1,h2{font:400 clamp(2.2rem,6.2vw,5.2rem)/1 'Instrument Serif',serif;margin:0 0 18px;letter-spacing:-.01em}
+h1{font-size:clamp(3rem,9.5vw,8.4rem);line-height:.92}
+h2 em{color:var(--rose)}
+p{margin:0 0 12px;color:var(--mute);font-size:clamp(.88rem,1.4vw,1.02rem);max-width:480px}
+.sub{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);margin:18px 0 10px}
+ul{list-style:none;margin:0 0 14px;padding:0}
+li{color:var(--mute);font-size:clamp(.82rem,1.3vw,.96rem);padding:3px 0 3px 18px;position:relative}
+li::before{content:"";position:absolute;left:0;top:.95em;width:8px;height:1px;background:var(--amber)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:4px 28px}
+.cols h3,.ed h3{font:400 1.15rem 'Instrument Serif',serif;margin:10px 0 2px;color:var(--ink)}
+.cols span{display:block;font-size:.8rem;color:var(--mute)}
+.ed div{border-left:1px solid rgba(255,179,71,.5);padding:2px 0 2px 16px;margin-bottom:10px}
+.ed small{color:var(--amber);font-size:.78rem;letter-spacing:.06em}
+.ed p{margin:0;font-size:.86rem}
+.cta{display:inline-block;margin-top:10px;padding:13px 28px;border:1px solid rgba(255,255,255,.6);border-radius:999px;color:var(--ink);text-decoration:none;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;backdrop-filter:blur(6px);background:rgba(255,255,255,.08);transition:background .3s,color .3s,transform .3s}
+.cta:hover{background:var(--amber);color:#2a1448;border-color:var(--amber)}
+.proj{cursor:pointer;border:0;background:none;color:var(--amber);font:inherit;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;padding:8px 0;border-bottom:1px solid var(--amber)}
+.detail{max-height:0;overflow:hidden;opacity:0;transition:max-height .6s,opacity .5s}
+.detail.open{max-height:260px;opacity:1}
+#bar{position:fixed;left:0;top:0;height:2px;width:0;z-index:30;background:linear-gradient(90deg,var(--amber),var(--rose))}
+#dots{position:fixed;right:2vw;top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:14px}
+#dots i{display:block;width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35);transition:.3s;cursor:pointer}
+#dots i.on{background:var(--amber);transform:scale(1.7);box-shadow:0 0 12px var(--amber)}
+.cue{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:20;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--mute);text-align:center;transition:opacity .5s}
+.cue b{display:block;width:1px;height:40px;margin:8px auto 0;background:linear-gradient(var(--amber),transparent);animation:dr 2s infinite}
+@keyframes dr{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+#cur{position:fixed;width:34px;height:34px;margin:-17px 0 0 -17px;border:1px solid rgba(255,200,120,.8);border-radius:50%;z-index:60;pointer-events:none;transition:width .25s,height .25s,margin .25s,background .25s;display:none}
+#cur.h{width:56px;height:56px;margin:-28px 0 0 -28px;background:rgba(255,179,71,.18)}
+@media(pointer:fine){#cur{display:block}}
+#load{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:#1a0e3c;transition:opacity .9s,visibility .9s}
+#load.off{opacity:0;visibility:hidden}
+#load b{font:400 clamp(1.8rem,5vw,3rem) 'Instrument Serif',serif;letter-spacing:.12em}
+#load i{display:block;width:160px;height:1px;background:rgba(255,255,255,.2);position:relative;overflow:hidden}
+#load i::after{content:"";position:absolute;inset:0;background:var(--amber);animation:ld 1.4s forwards}
+@keyframes ld{from{transform:translateX(-100%)}to{transform:none}}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+@media(max-width:760px){.ph,.ph.r{left:5vw;right:5vw;width:auto;top:54%}#dots{display:none}.cols{grid-template-columns:1fr 1fr;gap:0 14px}nav b{font-size:1.2rem}p{font-size:.84rem}li{font-size:.8rem;padding:1px 0 1px 16px}h2{font-size:2.1rem;margin-bottom:10px}.cols h3{margin-top:6px}.cue{bottom:14px}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;transition-duration:.01s!important}}
+</style>
+</head>
+<body>
+<div id="load"><b>TAHSIN ARSHAD</b><i></i></div>
+<div id="bar"></div><div id="cur"></div>
+<canvas id="gl"></canvas><div class="haze"></div>
+<nav><b>Tahsin.</b><div><button data-i="1">About</button><button data-i="3">Projects</button><button data-i="4">Skills</button><button data-i="5">Education</button><button data-i="7">Contact</button></div></nav>
+<div id="dots"></div>
+<div class="cue" id="cue">Scroll to travel<b></b></div>
+
+<div class="ph" data-i="0">
+<div class="lab">Dhaka, Bangladesh</div>
+<h1>TAHSIN<br>ARSHAD</h1>
+<div class="sub">Developing AI Skills | AI Automation | Creative Technology</div>
+<p>Exploring the intersection of artificial intelligence, automation, and creative technology.</p>
+</div>
+
+<div class="ph r" data-i="1">
+<div class="lab">About me</div>
+<h2>Developing AI skills, <em>solving real problems.</em></h2>
+<p>I am developing my skills in Artificial Intelligence and exploring how intelligent systems can solve practical problems. My interests include AI agents, automation, professional chatbots, and AI-powered creative work.</p>
+</div>
+
+<div class="ph" data-i="2">
+<div class="lab">Leadership and collaboration</div>
+<h2>Team Leader &amp; System Architect</h2>
+<p>Project: SmartBiz AI</p>
+<ul><li>Overall project planning and system architecture</li><li>Team leadership and coordination</li><li>Workflow design and integration planning</li><li>Coordination across backend, n8n, AI, Gmail, and dashboard components</li><li>Testing and deployment coordination</li><li>Documentation and presentation</li></ul>
+</div>
+
+<div class="ph r" data-i="3">
+<div class="lab">Featured project</div>
+<h2>SmartBiz AI</h2>
+<p>AI-Powered Business Automation System. It automates business processes through:</p>
+<ul><li>Lead collection</li><li>AI-generated email communication</li><li>Customer follow-up automation</li><li>Google Sheets integration</li><li>AI-generated reports</li><li>Notification workflows</li></ul>
+<button class="proj" id="pj">Technology stack</button>
+<div class="detail" id="dt"><p style="margin-top:10px">Python · FastAPI · n8n · Gemini API · SQLite · Gmail automation</p></div>
+</div>
+
+<div class="ph" data-i="4">
+<div class="lab">Skills and technologies</div>
+<h2>Tools I work with</h2>
+<div class="cols">
+<div><h3>AI and Automation</h3><span>Artificial Intelligence, AI Agents, AI Automation Workflows, Chatbots, Prompt Engineering, n8n</span></div>
+<div><h3>Development and Integration</h3><span>Python, FastAPI, Gemini API, SQLite, Gmail Automation</span></div>
+<div><h3>Creative Technology</h3><span>AI-Assisted Content Development, Video Editing, Advertisement Creation</span></div>
+<div><h3>Professional Skills</h3><span>Team Leadership, Communication, Project Coordination, Documentation, Presentation</span></div>
+<div><h3>Productivity</h3><span>MS Word, MS Excel, MS PowerPoint</span></div>
+</div></div>
+
+<div class="ph r ed" data-i="5">
+<div class="lab">Education</div>
+<h2>Academic background</h2>
+<div><h3>Master of Education (MEd)</h3><p>University of Dhaka</p><small>2024–2026</small></div>
+<div><h3>Bachelor of Arts in English</h3><p>Bangladesh University</p><small>2023 · CGPA: 3.78</small></div>
+<div><h3>Higher Secondary Certificate (HSC) — Science</h3><p>Mohammadpur Preparatory School &amp; College</p><small>2019 · GPA: 3.92</small></div>
+<div><h3>Secondary School Certificate (SSC) — Science</h3><p>Mohammadpur Preparatory School &amp; College</p><small>2017 · GPA: 5.00</small></div>
+<div><h3>AI Skill Development</h3><p>E-learning and Earning</p><small>2026–Present</small></div>
+</div>
+
+<div class="ph" data-i="6">
+<div class="lab">Creative technology and interests</div>
+<h2>Where ideas become <em>digital work</em></h2>
+<ul><li>AI-powered creative work</li><li>Video editing</li><li>Advertisement creation</li><li>AI agents and professional chatbots</li><li>Exploring new AI tools and technologies</li></ul>
+<div class="sub">Tools and applications</div>
+<p>Adobe Express · Wispr Flow · GitHub Copilot · Replit Agent</p>
+</div>
+
+<div class="ph r" data-i="7">
+<div class="lab">Contact</div>
+<h2>LET’S CONNECT</h2>
+<p>Interested in AI, automation, and creative technology? Let’s connect and explore new possibilities.</p>
+<p>Location: Dhaka, Bangladesh</p>
+<a class="cta" href="https://www.linkedin.com/in/tahsin-arshad-a47062441/" target="_blank" rel="noopener">LinkedIn</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)},$$=function(s){return [].slice.call(document.querySelectorAll(s))};
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches,mob=innerWidth<760,STOPS=7,GAP=50;
+function hide(){$('#load').classList.add('off')}setTimeout(hide,1700);setTimeout(hide,4000);
+/* UI */
+var P=$$('.ph'),dots=$('#dots'),dEl=[];
+for(var i=0;i<=STOPS;i++){var d=document.createElement('i');d.dataset.i=i;dots.appendChild(d);dEl.push(d)}
+function go(i){scrollTo({top:i/STOPS*(document.documentElement.scrollHeight-innerHeight),behavior:reduce?'auto':'smooth'})}
+$$('[data-i]').forEach(function(e){if(e.tagName==='BUTTON'||e.tagName==='I')e.onclick=function(){go(+e.dataset.i)}});
+$('#pj').onclick=function(){$('#dt').classList.toggle('open')};
+var cur=$('#cur');addEventListener('pointermove',function(e){cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)'});
+$$('a,button,#dots i').forEach(function(e){e.addEventListener('pointerenter',function(){cur.classList.add('h')});e.addEventListener('pointerleave',function(){cur.classList.remove('h')})});
+var prog=0,tp=0;
+function readScroll(){var m=document.documentElement.scrollHeight-innerHeight;tp=m>0?Math.min(Math.max(scrollY/m,0),1):0}
+addEventListener('scroll',readScroll,{passive:true});readScroll();
+function ui(){var f=prog*STOPS;$('#bar').style.width=prog*100+'%';$('#cue').style.opacity=Math.max(0,1-prog*14);
+ P.forEach(function(el){var i=+el.dataset.i,o=Math.max(0,Math.min(1,1.25-Math.abs(f-i)*2.1));el.style.opacity=o;el.style.transform='translateY(calc(-50% + '+((f-i)*-70)+'px))';el.classList.toggle('on',o>.6)});
+ var c=Math.round(f);dEl.forEach(function(d,i){d.classList.toggle('on',i===c)})}
+/* 3D */
+if(!window.THREE){ui();return}
+var cv=$('#gl'),R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:!mob});}catch(e){ui();tick0();return}
+function tick0(){(function l(){prog+=(tp-prog)*.1;ui();requestAnimationFrame(l)})()}
+R.setPixelRatio(Math.min(devicePixelRatio,mob?1.25:1.75));R.toneMapping=THREE.ACESFilmicToneMapping;
+var S=new THREE.Scene(),C=new THREE.PerspectiveCamera(55,1,.1,300);
+var pal=['#241250','#34205f','#1e2a63','#46245f','#24296a','#563a78','#6a3768','#3b1b52'].map(function(c){return new THREE.Color(c)});
+S.fog=new THREE.Fog(pal[0],25,mob?110:150);S.background=pal[0].clone();
+/* env reflections */
+var ec=document.createElement('canvas');ec.width=512;ec.height=256;var g=ec.getContext('2d'),gr=g.createLinearGradient(0,0,0,256);
+gr.addColorStop(0,'#2a1658');gr.addColorStop(.55,'#c98aa6');gr.addColorStop(.7,'#ffd2a8');gr.addColorStop(1,'#2a1658');g.fillStyle=gr;g.fillRect(0,0,512,256);
+var et=new THREE.CanvasTexture(ec);et.mapping=THREE.EquirectangularReflectionMapping;S.environment=new THREE.PMREMGenerator(R).fromEquirectangular(et).texture;
+S.add(new THREE.AmbientLight(0x8a70c0,.7));var sun=new THREE.DirectionalLight(0xffc9a0,1.3);sun.position.set(-20,30,10);S.add(sun);
+var warm=new THREE.PointLight(0xffa447,2.4,60);S.add(warm);
+var dark=new THREE.MeshStandardMaterial({color:0x2c1d58,metalness:.7,roughness:.35}),mid=new THREE.MeshStandardMaterial({color:0x453174,metalness:.6,roughness:.3}),
+ amb=new THREE.MeshBasicMaterial({color:0xffb347}),blue=new THREE.MeshBasicMaterial({color:0x7aa8ff}),
+ edge=new THREE.LineBasicMaterial({color:0xffb347,transparent:true,opacity:.75}),
+ gl=new THREE.MeshPhysicalMaterial({color:0xe9d8ff,metalness:0,roughness:.05,transparent:true,opacity:.28,clearcoat:1,envMapIntensity:1.8,side:THREE.DoubleSide});
+function add(par,geo,mat,x,y,z,ed){var m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);par.add(m);if(ed){var l=new THREE.LineSegments(new THREE.EdgesGeometry(geo),edge);l.position.copy(m.position);par.add(l)}return m}
+function B(w,h,d){return new THREE.BoxGeometry(w,h,d)}
+/* ground */
+var ground=new THREE.Mesh(new THREE.PlaneGeometry(400,600),new THREE.MeshStandardMaterial({color:0x1a0f3d,metalness:.9,roughness:.25}));ground.rotation.x=-Math.PI/2;ground.position.set(0,0,-170);S.add(ground);
+var grid=new THREE.GridHelper(400,80,0xffb347,0x5a3f95);grid.position.set(0,.02,-170);grid.scale.z=1.5;grid.material.transparent=true;grid.material.opacity=.22;S.add(grid);
+/* corridor slabs */
+var rnd=function(a,b){return a+Math.random()*(b-a)};
+for(var i=0;i<(mob?46:90);i++){var side=i%2?1:-1,h=rnd(8,44),x=side*rnd(12,34),z=-rnd(0,STOPS*GAP+20);
+ var s=add(S,B(rnd(3,8),h,rnd(3,8)),i%3?dark:mid,x,h/2,z,i%4===0);if(i%5===0)add(S,B(.25,h*.8,.25),amb,x-side*3,h*.45,z+3.2)}
+var L=[];function grp(i,x){var G=new THREE.Group();G.position.set(x,0,-i*GAP);S.add(G);L[i]=G;return G}
+/* 0 intro tower */
+var g0=grp(0,9);add(g0,B(16,1,16),mid,0,.5,0,true);add(g0,new THREE.CylinderGeometry(2.5,4.5,10,6),dark,0,6,0,true);add(g0,new THREE.CylinderGeometry(1,2.4,8,6),mid,0,15,0,true);
+add(g0,new THREE.SphereGeometry(1.2,24,24),amb,0,21,0);[-6,0,6].forEach(function(x){add(g0,new THREE.CylinderGeometry(.18,.18,12,8),amb,x,6.5,8)});
+var r0=add(g0,new THREE.TorusGeometry(6,.08,8,80),amb,0,12,0);r0.rotation.x=Math.PI/2;
+/* 1 about gate */
+var g1=grp(1,-8);add(g1,B(3,26,3),dark,-8,13,0,true);add(g1,B(3,26,3),dark,8,13,0,true);add(g1,B(19,2,3),mid,0,26,0,true);add(g1,B(14,.3,.3),amb,0,24,0);add(g1,B(12,20,.2),gl,0,12,0);
+/* 2 leadership network */
+var g2=grp(2,9),nd=[];for(var i=0;i<16;i++){var m=add(g2,new THREE.SphereGeometry(.5,16,16),i%4?amb:blue,rnd(-9,9),rnd(4,22),rnd(-9,9));nd.push(m)}
+var lp=[];nd.forEach(function(a,i){nd.forEach(function(b,j){if(j>i&&a.position.distanceTo(b.position)<13)lp.push(a.position,b.position)})});
+g2.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(lp),new THREE.LineBasicMaterial({color:0xffb347,transparent:true,opacity:.5})));
+/* 3 smartbiz rings + data stream */
+var g3=grp(3,-9),rg=[];for(var i=0;i<6;i++){var t=add(g3,new THREE.TorusGeometry(7-i*.5,.12,12,90),i%2?blue:amb,0,10,-i*9+18);rg.push(t)}
+var SN=mob?120:260,sp=new Float32Array(SN*3),sa=[];for(var i=0;i<SN;i++){var a=Math.random()*6.28,r=rnd(1,5);sa.push(a,r);sp[i*3]=Math.cos(a)*r;sp[i*3+1]=10+Math.sin(a)*r;sp[i*3+2]=rnd(-40,20)}
+var sg=new THREE.BufferGeometry();sg.setAttribute('position',new THREE.BufferAttribute(sp,3));g3.add(new THREE.Points(sg,new THREE.PointsMaterial({color:0xffd08a,size:.35})));
+/* 4 skills lattice */
+var g4=grp(4,9),lat=new THREE.Group();lat.position.y=12;g4.add(lat);
+for(var x=0;x<4;x++)for(var y=0;y<4;y++)for(var z=0;z<4;z++){var c=add(lat,B(.9,.9,.9),(x+y+z)%3?mid:amb,(x-1.5)*4,(y-1.5)*4,(z-1.5)*4,true)}
+/* 5 education calm */
+var g5=grp(5,-9);add(g5,B(26,.4,22),gl,0,.3,0);for(var i=0;i<4;i++)add(g5,B(5,18,.3),gl,-9+i*6,9.5,-i*3,true);add(g5,B(18,.15,.15),amb,0,.6,6);add(g5,new THREE.SphereGeometry(1.4,24,24),amb,0,16,-4);
+/* 6 creative iridescent */
+var ir=new THREE.ShaderMaterial({transparent:true,side:THREE.DoubleSide,depthWrite:false,uniforms:{t:{value:0}},vertexShader:'varying vec3 n;varying vec3 v;void main(){n=normalize(normalMatrix*normal);vec4 mv=modelViewMatrix*vec4(position,1.);v=normalize(-mv.xyz);gl_Position=projectionMatrix*mv;}',fragmentShader:'uniform float t;varying vec3 n;varying vec3 v;void main(){float f=pow(1.-abs(dot(normalize(n),v)),1.4);vec3 r=.55+.45*cos(6.283*(f*1.1+t*.06+vec3(0.,.33,.67)));gl_FragColor=vec4(mix(vec3(1.,.9,.95),r,f),.2+f*.65);}'});
+var g6=grp(6,9),ico=add(g6,new THREE.IcosahedronGeometry(5,1),ir,0,11,0),kn=add(g6,new THREE.TorusKnotGeometry(8,.12,160,8,2,3),amb,0,11,0);
+/* 7 portal */
+var g7=grp(7,0),pr=add(g7,new THREE.TorusGeometry(10,.45,16,120),amb,0,11,0);add(g7,new THREE.TorusGeometry(8,.12,16,120),blue,0,11,0);
+var gc=document.createElement('canvas');gc.width=gc.height=128;var gx=gc.getContext('2d'),rg2=gx.createRadialGradient(64,64,0,64,64,64);rg2.addColorStop(0,'rgba(255,214,140,.95)');rg2.addColorStop(.5,'rgba(255,150,90,.4)');rg2.addColorStop(1,'rgba(255,120,120,0)');gx.fillStyle=rg2;gx.fillRect(0,0,128,128);
+var glow=new THREE.Mesh(new THREE.PlaneGeometry(30,30),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(gc),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));glow.position.set(0,11,-1);g7.add(glow);
+add(g7,B(3,14,3),dark,-13,7,0,true);add(g7,B(3,14,3),dark,13,7,0,true);
+/* dust */
+var DN=mob?300:700,dp=new Float32Array(DN*3);for(var i=0;i<DN;i++){dp[i*3]=rnd(-40,40);dp[i*3+1]=rnd(0,40);dp[i*3+2]=-rnd(-20,STOPS*GAP+20)}
+var dg=new THREE.BufferGeometry();dg.setAttribute('position',new THREE.BufferAttribute(dp,3));S.add(new THREE.Points(dg,new THREE.PointsMaterial({color:0xffcf9a,size:.18,transparent:true,opacity:.7})));
+function size(){R.setSize(innerWidth,innerHeight,false);C.aspect=innerWidth/innerHeight;C.updateProjectionMatrix()}size();addEventListener('resize',size);
+var mx=0,my=0,tx=0,ty=0;addEventListener('pointermove',function(e){tx=e.clientX/innerWidth-.5;ty=e.clientY/innerHeight-.5});
+var clk=new THREE.Clock(),tmp=new THREE.Color(),vis=true;document.addEventListener('visibilitychange',function(){vis=!document.hidden});
+function loop(){requestAnimationFrame(loop);if(!vis)return;var t=clk.getElapsedTime(),dt=Math.min(clk.getDelta(),.05);
+ prog+=(tp-prog)*(reduce?.2:.07);mx+=(tx-mx)*.05;my+=(ty-my)*.05;var f=prog*STOPS,i=Math.min(Math.floor(f),STOPS-1),k=f-i;
+ /* camera travels the world */
+ var z=16-prog*STOPS*GAP;C.position.set(Math.sin(prog*18)*3.5+mx*4,5+Math.sin(prog*11)*1.6-my*2,z);
+ C.lookAt(Math.sin((prog+.03)*18)*3.5*.6+mx*6,7+Math.sin(f*1.3)*1.5,z-26);C.rotation.z+=Math.sin(prog*9)*.02;
+ warm.position.set(C.position.x+(i%2?-6:6),9,z-10);
+ /* palette evolves */
+ tmp.copy(pal[i]).lerp(pal[Math.min(i+1,pal.length-1)],k);S.background.copy(tmp);S.fog.color.copy(tmp);
+ /* scene motion tied to scroll */
+ L[0].rotation.y=f*.35;L[1].rotation.y=0;L[2].rotation.y=f*.5;nd.forEach(function(n,q){n.scale.setScalar(1+Math.sin(t*2+q)*.25)});
+ rg.forEach(function(r,q){r.rotation.z=f*1.2+q*.4;r.scale.setScalar(1+Math.sin(t*1.5+q)*.03)});
+ for(var q=0;q<SN;q++){sp[q*3+2]+=.18;if(sp[q*3+2]>20)sp[q*3+2]=-40;sa[q*2]+=.01;sp[q*3]=Math.cos(sa[q*2])*sa[q*2+1];sp[q*3+1]=10+Math.sin(sa[q*2])*sa[q*2+1]}sg.attributes.position.needsUpdate=true;
+ lat.rotation.y=f*.9+t*.08;lat.rotation.x=f*.4;ico.rotation.y=t*.15+f*.8;kn.rotation.set(t*.1,f,0);ir.uniforms.t.value=t;
+ pr.scale.setScalar(1+Math.sin(t)*.015);glow.scale.setScalar(1+Math.sin(t*.8)*.05);
+ R.render(S,C);ui()}
+loop();
+})();
+</script>
+</body>
+</html>
